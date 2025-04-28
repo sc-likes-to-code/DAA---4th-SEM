@@ -6,13 +6,14 @@ void swap(int *a, int *b) {
     *b = temp;
 }
 
-void sortJobsByProfit(int id[], int deadline[], int profit[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (profit[j] < profit[j + 1]) {
-                swap(&profit[j], &profit[j + 1]);
-                swap(&deadline[j], &deadline[j + 1]);
-                swap(&id[j], &id[j + 1]);
+// Sort jobs by decreasing profit
+void sortByProfit(int id[], int deadline[], int profit[], int n) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (profit[j] < profit[j+1]) {
+                swap(&profit[j], &profit[j+1]);
+                swap(&deadline[j], &deadline[j+1]);
+                swap(&id[j], &id[j+1]);
             }
         }
     }
@@ -23,13 +24,20 @@ int min(int a, int b) {
 }
 
 int main() {
-    int id[] = {1, 2, 3, 4, 5};           // Job IDs
-    int deadline[] = {2, 1, 2, 1, 3};     // Deadlines
-    int profit[] = {100, 19, 27, 25, 15}; // Profits
-    int n = sizeof(id) / sizeof(id[0]);
+    int n;
+    printf("Enter number of jobs: ");
+    scanf("%d", &n);
 
-    sortJobsByProfit(id, deadline, profit, n);
+    int id[n], deadline[n], profit[n];
 
+    for (int i = 0; i < n; i++) {
+        printf("Enter job id, deadline and profit for job %d: ", i+1);
+        scanf("%d%d%d", &id[i], &deadline[i], &profit[i]);
+    }
+
+    sortByProfit(id, deadline, profit, n);
+
+    // Find maximum deadline to size the slots
     int maxDeadline = 0;
     for (int i = 0; i < n; i++) {
         if (deadline[i] > maxDeadline)
@@ -42,7 +50,7 @@ int main() {
 
     int totalProfit = 0;
 
-    printf("Scheduled Jobs: ");
+    printf("\nScheduled Jobs: ");
     for (int i = 0; i < n; i++) {
         for (int j = min(deadline[i], maxDeadline) - 1; j >= 0; j--) {
             if (slot[j] == -1) {
