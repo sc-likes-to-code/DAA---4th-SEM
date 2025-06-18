@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 #define MAX 20
 #define MAX_COLOR_NAME 20
